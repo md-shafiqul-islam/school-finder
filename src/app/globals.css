@@ -1,26 +1,92 @@
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
+
 @import "tailwindcss";
+@plugin "daisyui";
 
+/* Root CSS Variables for global use */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-primary: #1e3a8a; /* Deep Blue */
+  --color-primary-dark: #1e40af; /* Darker Blue for hover */
+  --color-secondary: #2563eb; /* Link highlights */
+  --color-accent: #fbbf24; /* Call to action / buttons */
+  --color-background: #f8fafc; /* Page background */
+  --color-card-bg: #ffffff; /* Card background */
+  --color-foreground-dark: #111827; /* Dark text */
+  --color-foreground-light: #ffffff; /* Light text / buttons on dark */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Body defaults */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground-dark);
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+/* Links */
+a {
+  color: var(--color-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+/* Buttons */
+button {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* Card Styling */
+.card {
+  background-color: var(--color-card-bg);
+  color: var(--color-foreground-dark);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  color: var(--color-foreground-dark);
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.2);
+}
+
+/* Global utility overrides for Tailwind + DaisyUI harmony */
+.btn {
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
