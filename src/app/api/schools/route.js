@@ -1,5 +1,22 @@
+"use server";
+
 import { connectDB } from "@/lib/db";
 import { NextResponse } from "next/server";
+
+export async function GET() {
+  try {
+    const db = await connectDB();
+    const [schools] = await db.query("SELECT * FROM schools");
+    await db.end();
+    return NextResponse.json({ schools });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json(
+      { error: "Failed to fetch schools" },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(request) {
   try {
@@ -28,6 +45,8 @@ export async function POST(request) {
     ]);
 
     await db.end();
+
+    revalidatePath("/schools");
 
     return NextResponse.json(
       {
