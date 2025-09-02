@@ -5,10 +5,9 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const db = await connectDB();
-    const [schools] = await db.query("SELECT * FROM schools");
-    await db.end();
-    return NextResponse.json({ schools });
+    const db = connectDB();
+    const [rows] = await db.query("SELECT * FROM schools");
+    return NextResponse.json({ schools: rows });
   } catch (err) {
     console.error(err);
     return NextResponse.json(
@@ -20,8 +19,8 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { name, address, city, state, contact, image, email_id } =
-      await request.json();
+    const body = await request.json();
+    const { name, address, city, state, contact, image, email_id } = body;
 
     if (!name || !address || !city || !contact || !email_id) {
       return NextResponse.json(
@@ -30,35 +29,18 @@ export async function POST(request) {
       );
     }
 
-    const db = await connectDB();
+    const db = connectDB();
 
-    const sql = `INSERT INTO schools (name, address, city, state, contact, image, email_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-
-    const [result] = await db.query(sql, [
-      name,
-      address,
-      city,
-      state || null,
-      contact,
-      image || null,
-      email_id,
-    ]);
-
-    await db.end();
-
-    revalidatePath("/schools");
-
-    return NextResponse.json(
-      {
-        message: "School added successfully",
-        id: result.insertId,
-      },
-      { status: 201 }
+    const [result] = await db.query(
+      "INSERT INTO schools (name, address, city, state, contact, image, email_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [name, address, city, state || null, contact, image || null, email_id]
     );
+
+    return NextResponse.json({ id: result.insertId, ...body }, { status: 201 });
   } catch (error) {
-    console.error("Error inserting school:", error);
+    console.error(error);
     return NextResponse.json(
-      { error: "Failed to add school", details: error.message },
+      { error: "Failed to create school", details: error.message },
       { status: 500 }
     );
   }
