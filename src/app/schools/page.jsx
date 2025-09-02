@@ -1,11 +1,10 @@
+import { connectDB } from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function AllSchoolsPage() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/schools`, {
-    cache: "no-store",
-  });
-  const { schools } = await res.json();
+  const db = connectDB();
+  const [schools] = await db.query("SELECT * FROM schools");
 
   return (
     <section className="bg-background min-h-screen py-20">
