@@ -44,7 +44,11 @@ export default function AddSchoolPage() {
     const schoolData = { ...data, image: schoolImage };
 
     try {
-      await axios.post("/api/schools", schoolData);
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/schools`,
+        schoolData
+      );
+
       setSubmitted(true);
       reset();
       setSchoolImage("");

@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function AllSchoolsPage() {
-  const res = await fetch("/api/schools", { cache: "no-store" });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/schools`, {
+    cache: "no-store",
+  });
   const { schools } = await res.json();
 
   return (

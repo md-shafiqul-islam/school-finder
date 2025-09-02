@@ -7,9 +7,8 @@ export async function GET() {
   try {
     const db = connectDB();
     const [rows] = await db.query("SELECT * FROM schools");
-    return NextResponse.json({ schools: rows });
+    return NextResponse.json({ schools: rows || [] });
   } catch (err) {
-    console.error(err);
     return NextResponse.json(
       { error: "Failed to fetch schools" },
       { status: 500 }
@@ -38,7 +37,6 @@ export async function POST(request) {
 
     return NextResponse.json({ id: result.insertId, ...body }, { status: 201 });
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
       { error: "Failed to create school", details: error.message },
       { status: 500 }

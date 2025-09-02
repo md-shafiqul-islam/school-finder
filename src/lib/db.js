@@ -1,7 +1,5 @@
 import mysql from "mysql2/promise";
 
-let pool;
-
 export function connectDB() {
   if (!global.__mysqlPool) {
     global.__mysqlPool = mysql.createPool({
